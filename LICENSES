@@ -1,7 +1,8 @@
-This document lists all the licenses used in this node-glfw repository:
+This document lists all the licenses used in this node-opengl repository:
 
 - Part I - node-glfw distributed under BSD license
-- Part II - nehe examples ported to nodejs-opengl.
+- Part II - code from node-webgl project ( https://github.com/mikeseven/node-webgl/ )
+- Part III - nehe examples ported to nodejs-opengl.
 
 ------------------------------------------------------------------------------
 Part I - node-glfw distributed under BSD license
