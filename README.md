@@ -9,6 +9,10 @@ Dependencies
 - NodeJS
 - GL
 
+License
+-------
+BSD
+
 Todo
 ----
 
