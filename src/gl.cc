@@ -1779,6 +1779,18 @@ JS_METHOD(Color3f) {
   return scope.Close(Undefined());
 }
 
+JS_METHOD(Color4f) {
+  HandleScope scope;
+
+  float x = (float) args[0]->NumberValue();
+  float y = (float) args[1]->NumberValue();
+  float z = (float) args[2]->NumberValue();
+  float a = (float) args[3]->NumberValue();
+
+  glColor4f(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
 JS_METHOD(Rotatef) {
   HandleScope scope;
 
@@ -1853,6 +1865,130 @@ JS_METHOD(TexCoord2f) {
   float y1 = (float) args[1]->NumberValue();
   glTexCoord2f(x1,y1);
   return scope.Close(Undefined());  
+}
+
+JS_METHOD(Lightfv) {
+  HandleScope scope;
+
+  int light = args[0]->Int32Value();
+  int pname = args[1]->Int32Value();
+  int num=0;
+  GLfloat *ptr=getArrayData<GLfloat>(args[2],&num);
+
+  glLightfv(light, pname, ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Lightiv) {
+  HandleScope scope;
+
+  int light = args[0]->Int32Value();
+  int pname = args[1]->Int32Value();
+  int num=0;
+  GLint *ptr=getArrayData<GLint>(args[2],&num);
+
+  glLightiv(light, pname, ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Lightf) {
+  HandleScope scope;
+
+  int light = args[0]->Int32Value();
+  int pname = args[1]->Int32Value();
+  float param = (float) args[2]->NumberValue();
+  glLightf(light, pname, param);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Lighti) {
+  HandleScope scope;
+  int light = args[0]->Int32Value();
+  int pname = args[1]->Int32Value();
+  int param = args[2]->Int32Value();
+  glLighti(light, pname, param);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3b) {
+  HandleScope scope;
+  GLbyte nx = (GLbyte)args[0]->Int32Value();
+  GLbyte ny = (GLbyte)args[1]->Int32Value();
+  GLbyte nz = (GLbyte)args[2]->Int32Value();
+  glNormal3b(nx,ny,nz);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3d) {
+  HandleScope scope;
+  double nx = (double) args[0]->NumberValue();
+  double ny = (double) args[0]->NumberValue();
+  double nz = (double) args[0]->NumberValue();
+  glNormal3d(nx,ny,nz);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3f) {
+  HandleScope scope;
+  float nx = (float) args[0]->NumberValue();
+  float ny = (float) args[0]->NumberValue();
+  float nz = (float) args[0]->NumberValue();
+  glNormal3f(nx,ny,nz);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3i) {
+  HandleScope scope;
+  int nx = args[0]->Int32Value();
+  int ny = args[1]->Int32Value();
+  int nz = args[2]->Int32Value();
+  glNormal3i(nx,ny,nz);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3s) {
+  HandleScope scope;
+  short nx = args[0]->Int32Value();
+  short ny = args[1]->Int32Value();
+  short nz = args[2]->Int32Value();
+  glNormal3s(nx,ny,nz);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Normal3bv) {
+  HandleScope scope;
+  int num=0;
+  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
+  glNormal3bv(ptr);
+  return scope.Close(Undefined());
+}
+JS_METHOD(Normal3dv) {
+  HandleScope scope;
+  int num=0;
+  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
+  glNormal3dv(ptr);
+  return scope.Close(Undefined());
+}
+JS_METHOD(Normal3fv) {
+  HandleScope scope;
+  int num=0;
+  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
+  glNormal3fv(ptr);
+  return scope.Close(Undefined());
+}
+JS_METHOD(Normal3iv) {
+  HandleScope scope;
+  int num=0;
+  GLint *ptr=getArrayData<GLint>(args[0],&num);
+  glNormal3iv(ptr);
+  return scope.Close(Undefined());
+}
+JS_METHOD(Normal3sv) {
+  HandleScope scope;
+  int num=0;
+  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
+  glNormal3sv(ptr);
+  return scope.Close(Undefined());
 }
 
 struct GLObj {

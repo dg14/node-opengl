@@ -161,12 +161,30 @@ JS_METHOD(LoadIdentity);
 JS_METHOD(Begin);
 JS_METHOD(End);
 JS_METHOD(Color3f);
+JS_METHOD(Color4f);
 JS_METHOD(Vertex3f);
 JS_METHOD(Rotatef);
 JS_METHOD(Ortho);
 JS_METHOD(Translatef);
 JS_METHOD(ShadeModel);
 JS_METHOD(TexCoord2f);
+JS_METHOD(Lightf);
+JS_METHOD(Lighti);
+JS_METHOD(Lightfv);
+JS_METHOD(Lightiv);
+
+JS_METHOD(Normal3b);
+JS_METHOD(Normal3d);
+JS_METHOD(Normal3f);
+JS_METHOD(Normal3i);
+JS_METHOD(Normal3s);
+
+JS_METHOD(Normal3bv);
+JS_METHOD(Normal3dv);
+JS_METHOD(Normal3fv);
+JS_METHOD(Normal3iv);
+JS_METHOD(Normal3sv);
+
 
 }
 

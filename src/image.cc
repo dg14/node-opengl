@@ -224,12 +224,16 @@ void Image::AtExit() {
   #endif
   vector<Image*>::iterator it = images.begin();
   while(it != images.end()) {
+    //cout << "Cycle"<<endl;
     Image *img=*it;
     v8::Persistent<v8::Value> value = img->handle_;
     //v8::Object* obj = v8::Object::Cast(*value);
     //BYTE* ptr = (BYTE*) obj->GetIndexedPropertiesExternalArrayData();
-    value.ClearWeak();
-    value.Dispose();
+	//cout << value << endl;
+	//cout << "Clear"<<endl;
+    //value.ClearWeak();
+	//cout << "dispose"<<endl;
+    //value.Dispose();
     if (img->image_bmp) {
       #ifdef LOGGING
       cout<<"  Deleting image"<<endl;

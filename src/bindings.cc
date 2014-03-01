@@ -168,13 +168,30 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "begin", gl::Begin);        
   NODE_SET_METHOD(target, "end", gl::End);
   NODE_SET_METHOD(target, "color3f", gl::Color3f);
+  NODE_SET_METHOD(target, "color4f", gl::Color4f);
   NODE_SET_METHOD(target, "vertex3f", gl::Vertex3f);
   NODE_SET_METHOD(target, "rotatef", gl::Rotatef);
   NODE_SET_METHOD(target, "ortho", gl::Ortho);
   NODE_SET_METHOD(target, "translatef", gl::Translatef);
   NODE_SET_METHOD(target, "shadeModel", gl::ShadeModel);
   NODE_SET_METHOD(target, "texCoord2f", gl::TexCoord2f);
-  
+
+  NODE_SET_METHOD(target, "lightf", gl::Lightf);
+  NODE_SET_METHOD(target, "lighti", gl::Lighti);
+  NODE_SET_METHOD(target, "lightfv", gl::Lightfv);
+  NODE_SET_METHOD(target, "lightiv", gl::Lightiv);
+
+  NODE_SET_METHOD(target, "normal3b", gl::Normal3b);
+  NODE_SET_METHOD(target, "normal3d", gl::Normal3d);
+  NODE_SET_METHOD(target, "normal3f", gl::Normal3f);
+  NODE_SET_METHOD(target, "normal3i", gl::Normal3i);
+  NODE_SET_METHOD(target, "normal3s", gl::Normal3s);
+
+  NODE_SET_METHOD(target, "normal3bv", gl::Normal3b);
+  NODE_SET_METHOD(target, "normal3dv", gl::Normal3d);
+  NODE_SET_METHOD(target, "normal3fv", gl::Normal3f);
+  NODE_SET_METHOD(target, "normal3iv", gl::Normal3i);
+  NODE_SET_METHOD(target, "normal3sv", gl::Normal3s);
 
   // OpenGL ES 2.1 constants
 
