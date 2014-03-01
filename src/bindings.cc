@@ -167,8 +167,21 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "loadIdentity", gl::LoadIdentity);
   NODE_SET_METHOD(target, "begin", gl::Begin);        
   NODE_SET_METHOD(target, "end", gl::End);
+  NODE_SET_METHOD(target, "color3b", gl::Color3b);
+  NODE_SET_METHOD(target, "color3s", gl::Color3s);
   NODE_SET_METHOD(target, "color3f", gl::Color3f);
+  NODE_SET_METHOD(target, "color3d", gl::Color3d);
+  NODE_SET_METHOD(target, "color3ub", gl::Color3ub);
+  NODE_SET_METHOD(target, "color3us", gl::Color3us);
+  NODE_SET_METHOD(target, "color3ui", gl::Color3ui);
+  NODE_SET_METHOD(target, "color4b", gl::Color4b);
+  NODE_SET_METHOD(target, "color4s", gl::Color4s);
   NODE_SET_METHOD(target, "color4f", gl::Color4f);
+  NODE_SET_METHOD(target, "color4d", gl::Color4d);
+  NODE_SET_METHOD(target, "color4ub", gl::Color4ub);
+  NODE_SET_METHOD(target, "color4us", gl::Color4us);
+  NODE_SET_METHOD(target, "color4ui", gl::Color4ui);
+
   NODE_SET_METHOD(target, "vertex3f", gl::Vertex3f);
   NODE_SET_METHOD(target, "rotatef", gl::Rotatef);
   NODE_SET_METHOD(target, "ortho", gl::Ortho);

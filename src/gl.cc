@@ -1768,26 +1768,187 @@ JS_METHOD(Vertex3f) {
   return scope.Close(Undefined());
 }
 
+JS_METHOD(Color3b) {
+  HandleScope scope;
+
+  GLbyte x = (GLbyte) args[0]->Int32Value();
+  GLbyte y = (GLbyte) args[1]->Int32Value();
+  GLbyte z = (GLbyte) args[2]->Int32Value();
+
+  glColor3b(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3s) {
+  HandleScope scope;
+
+  GLshort x = (GLshort) args[0]->Int32Value();
+  GLshort y = (GLshort) args[1]->Int32Value();
+  GLshort z = (GLshort) args[2]->Int32Value();
+
+  glColor3s(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3i) {
+  HandleScope scope;
+
+  GLint x = (GLint) args[0]->Int32Value();
+  GLint y = (GLint) args[1]->Int32Value();
+  GLint z = (GLint) args[2]->Int32Value();
+
+  glColor3i(x, y, z);
+  return scope.Close(Undefined());
+}
+
 JS_METHOD(Color3f) {
   HandleScope scope;
 
-  float x = (float) args[0]->NumberValue();
-  float y = (float) args[1]->NumberValue();
-  float z = (float) args[2]->NumberValue();
+  GLfloat x = (GLfloat) args[0]->NumberValue();
+  GLfloat y = (GLfloat) args[1]->NumberValue();
+  GLfloat z = (GLfloat) args[2]->NumberValue();
 
   glColor3f(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3d) {
+  HandleScope scope;
+
+  GLdouble x = (GLdouble) args[0]->NumberValue();
+  GLdouble y = (GLdouble) args[1]->NumberValue();
+  GLdouble z = (GLdouble) args[2]->NumberValue();
+
+  glColor3d(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3us) {
+  HandleScope scope;
+
+  GLushort x = (GLushort) args[0]->Int32Value();
+  GLushort y = (GLushort) args[1]->Int32Value();
+  GLushort z = (GLushort) args[2]->Int32Value();
+
+  glColor3us(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3ui) {
+  HandleScope scope;
+
+  GLuint x = (GLuint) args[0]->Int32Value();
+  GLuint y = (GLuint) args[1]->Int32Value();
+  GLuint z = (GLuint) args[2]->Int32Value();
+
+  glColor3i(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3ub) {
+  HandleScope scope;
+
+  GLubyte x = (GLubyte) args[0]->Int32Value();
+  GLubyte y = (GLubyte) args[1]->Int32Value();
+  GLubyte z = (GLubyte) args[2]->Int32Value();
+
+  glColor3ub(x, y, z);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4b) {
+  HandleScope scope;
+
+  GLbyte x = (GLbyte) args[0]->Int32Value();
+  GLbyte y = (GLbyte) args[1]->Int32Value();
+  GLbyte z = (GLbyte) args[2]->Int32Value();
+  GLbyte a = (GLbyte) args[3]->Int32Value();
+
+  glColor4b(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4s) {
+  HandleScope scope;
+
+  GLshort x = (GLshort) args[0]->Int32Value();
+  GLshort y = (GLshort) args[1]->Int32Value();
+  GLshort z = (GLshort) args[2]->Int32Value();
+  GLshort a = (GLshort) args[3]->Int32Value();
+
+  glColor4s(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4i) {
+  HandleScope scope;
+
+  GLint x = (GLint) args[0]->Int32Value();
+  GLint y = (GLint) args[1]->Int32Value();
+  GLint z = (GLint) args[2]->Int32Value();
+  GLint a = (GLint) args[3]->Int32Value();
+
+  glColor4i(x, y, z, a);
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4f) {
   HandleScope scope;
 
-  float x = (float) args[0]->NumberValue();
-  float y = (float) args[1]->NumberValue();
-  float z = (float) args[2]->NumberValue();
-  float a = (float) args[3]->NumberValue();
+  GLfloat x = (GLfloat) args[0]->NumberValue();
+  GLfloat y = (GLfloat) args[1]->NumberValue();
+  GLfloat z = (GLfloat) args[2]->NumberValue();
+  GLfloat a = (GLfloat) args[3]->NumberValue();
 
   glColor4f(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4d) {
+  HandleScope scope;
+
+  GLdouble x = (GLdouble) args[0]->NumberValue();
+  GLdouble y = (GLdouble) args[1]->NumberValue();
+  GLdouble z = (GLdouble) args[2]->NumberValue();
+  GLdouble a = (GLdouble) args[3]->NumberValue();
+
+  glColor4d(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4us) {
+  HandleScope scope;
+
+  GLushort x = (GLushort) args[0]->Int32Value();
+  GLushort y = (GLushort) args[1]->Int32Value();
+  GLushort z = (GLushort) args[2]->Int32Value();
+  GLushort a = (GLushort) args[3]->Int32Value();
+
+  glColor4us(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4ui) {
+  HandleScope scope;
+
+  GLuint x = (GLuint) args[0]->Int32Value();
+  GLuint y = (GLuint) args[1]->Int32Value();
+  GLuint z = (GLuint) args[2]->Int32Value();
+  GLuint a = (GLuint) args[3]->Int32Value();
+
+  glColor4ui(x, y, z, a);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4ub) {
+  HandleScope scope;
+
+  GLubyte x = (GLubyte) args[0]->Int32Value();
+  GLubyte y = (GLubyte) args[1]->Int32Value();
+  GLubyte z = (GLubyte) args[2]->Int32Value();
+  GLubyte a = (GLubyte) args[3]->Int32Value();
+
+  glColor4ub(x, y, z, a);
   return scope.Close(Undefined());
 }
 
