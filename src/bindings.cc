@@ -167,6 +167,7 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "loadIdentity", gl::LoadIdentity);
   NODE_SET_METHOD(target, "begin", gl::Begin);        
   NODE_SET_METHOD(target, "end", gl::End);
+  
   NODE_SET_METHOD(target, "color3b", gl::Color3b);
   NODE_SET_METHOD(target, "color3s", gl::Color3s);
   NODE_SET_METHOD(target, "color3f", gl::Color3f);
@@ -181,6 +182,21 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "color4ub", gl::Color4ub);
   NODE_SET_METHOD(target, "color4us", gl::Color4us);
   NODE_SET_METHOD(target, "color4ui", gl::Color4ui);
+  
+  NODE_SET_METHOD(target, "color3bv", gl::Color3bv);
+  NODE_SET_METHOD(target, "color3sv", gl::Color3sv);
+  NODE_SET_METHOD(target, "color3fv", gl::Color3fv);
+  NODE_SET_METHOD(target, "color3dv", gl::Color3dv);
+  NODE_SET_METHOD(target, "color3ubv", gl::Color3ubv);
+  NODE_SET_METHOD(target, "color3usv", gl::Color3usv);
+  NODE_SET_METHOD(target, "color3uiv", gl::Color3uiv);
+  NODE_SET_METHOD(target, "color4bv", gl::Color4bv);
+  NODE_SET_METHOD(target, "color4sv", gl::Color4sv);
+  NODE_SET_METHOD(target, "color4fv", gl::Color4fv);
+  NODE_SET_METHOD(target, "color4dv", gl::Color4dv);
+  NODE_SET_METHOD(target, "color4ubv", gl::Color4ubv);
+  NODE_SET_METHOD(target, "color4usv", gl::Color4usv);
+  NODE_SET_METHOD(target, "color4uiv", gl::Color4uiv);
 
   NODE_SET_METHOD(target, "vertex3f", gl::Vertex3f);
   NODE_SET_METHOD(target, "rotatef", gl::Rotatef);
@@ -207,6 +223,10 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "normal3sv", gl::Normal3s);
 
   NODE_SET_METHOD(target, "polygonMode", gl::PolygonMode);  
+  NODE_SET_METHOD(target, "createList", gl::CreateList);
+  NODE_SET_METHOD(target, "newList", gl::NewList);
+  NODE_SET_METHOD(target, "endList", gl::EndList);  
+  NODE_SET_METHOD(target, "callList", gl::CallList);  
 
   // OpenGL ES 2.1 constants
 
@@ -737,6 +757,8 @@ void init(Handle<Object> target)
   JS_GL_CONSTANT(PROJECTION);
   JS_GL_CONSTANT(TEXTURE);
   JS_GL_CONSTANT(COLOR);  
+
+  JS_GL_CONSTANT(COMPILE);
 
   /* WebGL-specific enums */
   target->Set(JS_STR( "UNPACK_FLIP_Y_WEBGL" ), JS_INT(0x9240));

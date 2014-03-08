@@ -1952,6 +1952,136 @@ JS_METHOD(Color4ub) {
   return scope.Close(Undefined());
 }
 
+JS_METHOD(Color3bv) {  
+  HandleScope scope;
+  int num=0;  
+  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
+  glColor3bv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3sv) {
+  HandleScope scope;
+  int num=0;  
+  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
+  glColor3sv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3iv) {
+  HandleScope scope;
+  int num=0;  
+  GLint *ptr=getArrayData<GLint>(args[0],&num);
+  glColor3iv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3fv) {
+  HandleScope scope;
+  int num=0;  
+  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
+  if (num!=3) ThrowError("Color3fv: wrong number of parameters");
+  cout << num << "\n";
+  glColor3fv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3dv) {
+  HandleScope scope;
+  int num=0;  
+  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
+  glColor3dv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3usv) {
+  HandleScope scope;
+  int num=0;  
+  GLushort *ptr=getArrayData<GLushort>(args[0],&num);
+  glColor3usv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3uiv) {
+  HandleScope scope;
+  int num=0;  
+  GLuint *ptr=getArrayData<GLuint>(args[0],&num);
+  glColor3uiv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color3ubv) {
+  HandleScope scope;
+  int num=0;  
+  GLubyte *ptr=getArrayData<GLubyte>(args[0],&num);
+  glColor3ubv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4bv) {  
+  HandleScope scope;
+  int num=0;  
+  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
+  glColor4bv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4sv) {
+  HandleScope scope;
+  int num=0;  
+  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
+  glColor4sv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4iv) {
+  HandleScope scope;
+  int num=0;  
+  GLint *ptr=getArrayData<GLint>(args[0],&num);
+  glColor4iv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4fv) {
+  HandleScope scope;
+  int num=0;  
+  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
+  glColor4fv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4dv) {
+  HandleScope scope;
+  int num=0;
+  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
+  glColor4dv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4usv) {
+  HandleScope scope;
+  int num=0;  
+  GLushort *ptr=getArrayData<GLushort>(args[0],&num);
+  glColor4usv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4uiv) {
+  HandleScope scope;
+  int num=0;  
+  GLuint *ptr=getArrayData<GLuint>(args[0],&num);
+  glColor4uiv(ptr);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Color4ubv) {
+  HandleScope scope;
+  int num=0;  
+  GLubyte *ptr=getArrayData<GLubyte>(args[0],&num);
+  glColor4ubv(ptr);
+  return scope.Close(Undefined());
+}
+
 JS_METHOD(Rotatef) {
   HandleScope scope;
 
@@ -2162,6 +2292,37 @@ JS_METHOD(PolygonMode) {
   return scope.Close(Undefined());
 }
 
+JS_METHOD(CreateList) {
+  HandleScope scope;
+  return scope.Close(JS_INT(glGenLists(1)));
+}
+
+JS_METHOD(NewList) {
+  HandleScope scope;
+
+  int list = args[0]->Int32Value();
+  int mode = args[1]->Int32Value();
+
+  glNewList(list,mode);
+
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(CallList) {
+  HandleScope scope;
+
+  int list = args[0]->Int32Value();
+
+  glCallList(list);
+
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(EndList) {
+  HandleScope scope;
+  glEndList();
+  return scope.Close(Undefined());
+}
 
 struct GLObj {
   GLObjectType type;

@@ -176,6 +176,23 @@ JS_METHOD(Color4d);
 JS_METHOD(Color4ub);
 JS_METHOD(Color4us);
 JS_METHOD(Color4ui);
+
+JS_METHOD(Color3bv);
+JS_METHOD(Color3sv);
+JS_METHOD(Color3iv);
+JS_METHOD(Color3fv);
+JS_METHOD(Color3dv);
+JS_METHOD(Color3ubv);
+JS_METHOD(Color3usv);
+JS_METHOD(Color3uiv);
+JS_METHOD(Color4bv);
+JS_METHOD(Color4sv);
+JS_METHOD(Color4iv);
+JS_METHOD(Color4fv);
+JS_METHOD(Color4dv);
+JS_METHOD(Color4ubv);
+JS_METHOD(Color4usv);
+JS_METHOD(Color4uiv);
 JS_METHOD(Vertex3f);
 JS_METHOD(Rotatef);
 JS_METHOD(Ortho);
@@ -199,6 +216,11 @@ JS_METHOD(Normal3fv);
 JS_METHOD(Normal3iv);
 JS_METHOD(Normal3sv);
 JS_METHOD(PolygonMode);
+
+JS_METHOD(CreateList);
+JS_METHOD(NewList);
+JS_METHOD(EndList);
+JS_METHOD(CallList);
 
 
 }
