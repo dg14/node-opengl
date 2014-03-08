@@ -206,6 +206,8 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "normal3iv", gl::Normal3i);
   NODE_SET_METHOD(target, "normal3sv", gl::Normal3s);
 
+  NODE_SET_METHOD(target, "polygonMode", gl::PolygonMode);  
+
   // OpenGL ES 2.1 constants
 
   /* ClearBufferMask */

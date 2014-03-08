@@ -2151,6 +2151,17 @@ JS_METHOD(Normal3sv) {
   glNormal3sv(ptr);
   return scope.Close(Undefined());
 }
+JS_METHOD(PolygonMode) {
+  HandleScope scope;
+
+  int face = args[0]->Int32Value();
+  int mode = args[1]->Int32Value();
+
+  glPolygonMode(face,mode);
+
+  return scope.Close(Undefined());
+}
+
 
 struct GLObj {
   GLObjectType type;

@@ -198,6 +198,7 @@ JS_METHOD(Normal3dv);
 JS_METHOD(Normal3fv);
 JS_METHOD(Normal3iv);
 JS_METHOD(Normal3sv);
+JS_METHOD(PolygonMode);
 
 
 }
