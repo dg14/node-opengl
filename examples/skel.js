@@ -20,6 +20,7 @@ requestAnimationFrame = app.requestAnimationFrame;
 exports.main = function() {
     var canvas = app.createElement("lesson02-canvas");
     initGL(canvas);
+    glfw.Enable(glfw.KEY_REPEAT);    
     if (this.onInitScene) this.onInitScene();
     if (this.onResize) this.onResize();
     var state=[];
