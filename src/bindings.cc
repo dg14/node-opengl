@@ -227,6 +227,10 @@ void init(Handle<Object> target)
   NODE_SET_METHOD(target, "newList", gl::NewList);
   NODE_SET_METHOD(target, "endList", gl::EndList);  
   NODE_SET_METHOD(target, "callList", gl::CallList);  
+  NODE_SET_METHOD(target, "fogi", gl::Fogi);  
+  NODE_SET_METHOD(target, "fogf", gl::Fogf);  
+  NODE_SET_METHOD(target, "fogiv", gl::Fogiv);  
+  NODE_SET_METHOD(target, "fogfv", gl::Fogfv);  
 
   // OpenGL ES 2.1 constants
 
@@ -759,6 +763,16 @@ void init(Handle<Object> target)
   JS_GL_CONSTANT(COLOR);  
 
   JS_GL_CONSTANT(COMPILE);
+
+  JS_GL_CONSTANT(FOG);  
+  JS_GL_CONSTANT(FOG_MODE);  
+  JS_GL_CONSTANT(FOG_DENSITY);  
+  JS_GL_CONSTANT(FOG_START);  
+  JS_GL_CONSTANT(FOG_END);  
+  JS_GL_CONSTANT(FOG_INDEX);  
+  JS_GL_CONSTANT(FOG_COLOR);  
+  JS_GL_CONSTANT(FOG_COORD_SRC);  
+
 
   /* WebGL-specific enums */
   target->Set(JS_STR( "UNPACK_FLIP_Y_WEBGL" ), JS_INT(0x9240));

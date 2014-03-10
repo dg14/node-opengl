@@ -222,6 +222,10 @@ JS_METHOD(NewList);
 JS_METHOD(EndList);
 JS_METHOD(CallList);
 
+JS_METHOD(Fogi);
+JS_METHOD(Fogf);
+JS_METHOD(Fogfv);
+JS_METHOD(Fogiv);
 
 }
 

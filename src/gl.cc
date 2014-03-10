@@ -70,11 +70,11 @@ inline void *getImageData(Local<Value> arg) {
   return pixels;
 }
 
+/*
 template<typename Type>
 inline Type* getArrayData(Local<Value> arg, int* num = NULL) {
   Type *data=NULL;
   if(num) *num=0;
-
   if(!arg->IsNull()) {
     if(arg->IsArray()) {
       Local<Array> arr = Array::Cast(*arg);
@@ -90,6 +90,23 @@ inline Type* getArrayData(Local<Value> arg, int* num = NULL) {
   }
 
   return data;
+}
+*/
+
+template<typename Type>
+inline Type *arg2v(Local<Array> arg, bool isFloat, unsigned int expectedNum, unsigned int *num=NULL) {
+  if(!arg->IsNull() && arg->IsArray()) {
+    if (num) *num=arg->Length();
+    if (expectedNum!=0 && arg->Length()!=expectedNum) ThrowException(JS_STR("Bad array argument count"));
+    Type *var=new Type[arg->Length()];
+    for (unsigned int i=0;i<arg->Length();i++) {
+      var[i]=isFloat?arg->Get(Integer::New(i))->NumberValue():arg->Get(Integer::New(i))->Int32Value();;
+    }
+    return var;
+  } else {
+    ThrowException(JS_STR("Bad array argument"));
+  }
+  return NULL;
 }
 
 JS_METHOD(Init) {
@@ -199,35 +216,33 @@ JS_METHOD(Uniform4i) {
 
 JS_METHOD(Uniform1fv) {
   HandleScope scope;
-
   int location = args[0]->Int32Value();
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[1],&num);
-  glUniform1fv(location, num, ptr);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,&num);      
+  glUniform1fv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Uniform2fv) {
   HandleScope scope;
-
   int location = args[0]->Int32Value();
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[1],&num);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,&num);      
   num /= 2;
-
-  glUniform2fv(location, num, ptr);
+  glUniform2fv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Uniform3fv) {
   HandleScope scope;
-
   int location = args[0]->Int32Value();
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[1],&num);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,&num);      
   num /= 3;
-
-  glUniform3fv(location, num, ptr);
+  glUniform3fv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -235,22 +250,22 @@ JS_METHOD(Uniform4fv) {
   HandleScope scope;
 
   int location = args[0]->Int32Value();
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[1],&num);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,&num);  
   num /= 4;
-
-  glUniform4fv(location, num, ptr);
+  glUniform4fv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Uniform1iv) {
   HandleScope scope;
-
   int location = args[0]->Int32Value();
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[1],&num);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[1]),false,0,&num);      
 
-  glUniform1iv(location, num, ptr);
+  glUniform1iv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -258,11 +273,12 @@ JS_METHOD(Uniform2iv) {
   HandleScope scope;
 
   int location = args[0]->Int32Value();
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[1],&num);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[1]),false,0,&num);
   num /= 2;
 
-  glUniform2iv(location, num, ptr);
+  glUniform2iv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -270,10 +286,11 @@ JS_METHOD(Uniform3iv) {
   HandleScope scope;
 
   int location = args[0]->Int32Value();
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[1],&num);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[1]),false,0,&num);      
   num /= 3;
-  glUniform3iv(location, num, ptr);
+  glUniform3iv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -281,10 +298,11 @@ JS_METHOD(Uniform4iv) {
   HandleScope scope;
 
   int location = args[0]->Int32Value();
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[1],&num);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[1]),false,0,&num);      
   num /= 4;
-  glUniform4iv(location, num, ptr);
+  glUniform4iv(location, num, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -338,13 +356,15 @@ JS_METHOD(UniformMatrix2fv) {
   GLboolean transpose = args[1]->BooleanValue();
 
   GLsizei count=0;
-  GLfloat* data=getArrayData<GLfloat>(args[2],&count);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[2]),true,0,(unsigned int *)&count);      
 
   if (count < 4) {
-    return ThrowError("Not enough data for UniformMatrix2fv");
+    delete data;
+    return ThrowError("Not enough data for UniformMatrix2fv");    
   }
 
   glUniformMatrix2fv(location, count / 4, transpose, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -355,13 +375,15 @@ JS_METHOD(UniformMatrix3fv) {
   GLint location = args[0]->Int32Value();
   GLboolean transpose = args[1]->BooleanValue();
   GLsizei count=0;
-  GLfloat* data=getArrayData<GLfloat>(args[2],&count);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[2]),true,0,(unsigned int *)&count);      
 
   if (count < 9) {
+    delete data;
     return ThrowError("Not enough data for UniformMatrix3fv");
   }
 
   glUniformMatrix3fv(location, count / 9, transpose, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -372,13 +394,15 @@ JS_METHOD(UniformMatrix4fv) {
   GLint location = args[0]->Int32Value();
   GLboolean transpose = args[1]->BooleanValue();
   GLsizei count=0;
-  GLfloat* data=getArrayData<GLfloat>(args[2],&count);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[2]),true,0,(unsigned int *)&count);      
 
   if (count < 16) {
+    delete data;
     return ThrowError("Not enough data for UniformMatrix4fv");
   }
 
   glUniformMatrix4fv(location, count / 16, transpose, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -928,8 +952,9 @@ JS_METHOD(VertexAttrib1fv) {
   HandleScope scope;
 
   int indx = args[0]->Int32Value();
-  GLfloat *data = getArrayData<GLfloat>(args[1]);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,NULL);
   glVertexAttrib1fv(indx, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -938,8 +963,9 @@ JS_METHOD(VertexAttrib2fv) {
   HandleScope scope;
 
   int indx = args[0]->Int32Value();
-  GLfloat *data = getArrayData<GLfloat>(args[1]);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,NULL);
   glVertexAttrib2fv(indx, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -948,8 +974,9 @@ JS_METHOD(VertexAttrib3fv) {
   HandleScope scope;
 
   int indx = args[0]->Int32Value();
-  GLfloat *data = getArrayData<GLfloat>(args[1]);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,NULL);
   glVertexAttrib3fv(indx, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -958,8 +985,9 @@ JS_METHOD(VertexAttrib4fv) {
   HandleScope scope;
 
   int indx = args[0]->Int32Value();
-  GLfloat *data = getArrayData<GLfloat>(args[1]);
+  GLfloat *data=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,NULL);
   glVertexAttrib4fv(indx, data);
+  delete data;
 
   return scope.Close(Undefined());
 }
@@ -1930,155 +1958,165 @@ JS_METHOD(Color4us) {
 
 JS_METHOD(Color4ui) {
   HandleScope scope;
-
   GLuint x = (GLuint) args[0]->Int32Value();
   GLuint y = (GLuint) args[1]->Int32Value();
   GLuint z = (GLuint) args[2]->Int32Value();
   GLuint a = (GLuint) args[3]->Int32Value();
-
   glColor4ui(x, y, z, a);
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4ub) {
   HandleScope scope;
-
   GLubyte x = (GLubyte) args[0]->Int32Value();
   GLubyte y = (GLubyte) args[1]->Int32Value();
   GLubyte z = (GLubyte) args[2]->Int32Value();
   GLubyte a = (GLubyte) args[3]->Int32Value();
-
   glColor4ub(x, y, z, a);
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3bv) {  
   HandleScope scope;
-  int num=0;  
-  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
-  glColor3bv(ptr);
+  unsigned int num=0;
+  GLbyte *param=arg2v<GLbyte>(Array::Cast(*args[0]),false,3,&num);      
+  glColor3bv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3sv) {
   HandleScope scope;
-  int num=0;  
-  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
-  glColor3sv(ptr);
+  unsigned int num=0;
+  GLshort *param=arg2v<GLshort>(Array::Cast(*args[0]),false,3,&num);      
+  glColor3sv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3iv) {
   HandleScope scope;
-  int num=0;  
-  GLint *ptr=getArrayData<GLint>(args[0],&num);
-  glColor3iv(ptr);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[0]),false,3,&num);      
+  glColor3iv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3fv) {
   HandleScope scope;
-  int num=0;  
-  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
-  if (num!=3) ThrowError("Color3fv: wrong number of parameters");
-  cout << num << "\n";
-  glColor3fv(ptr);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[0]),true,3,&num);      
+  glColor3fv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3dv) {
   HandleScope scope;
-  int num=0;  
-  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
-  glColor3dv(ptr);
+  unsigned int num=0;
+  GLdouble *param=arg2v<GLdouble>(Array::Cast(*args[0]),true,3,&num);
+  glColor3dv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3usv) {
   HandleScope scope;
-  int num=0;  
-  GLushort *ptr=getArrayData<GLushort>(args[0],&num);
-  glColor3usv(ptr);
+  unsigned int num=0;
+  GLushort *param=arg2v<GLushort>(Array::Cast(*args[0]),false,3,&num);      
+  glColor3usv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3uiv) {
   HandleScope scope;
-  int num=0;  
-  GLuint *ptr=getArrayData<GLuint>(args[0],&num);
-  glColor3uiv(ptr);
+  unsigned int num=0;
+  GLuint *param=arg2v<GLuint>(Array::Cast(*args[0]),false,3,&num);      
+  glColor3uiv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color3ubv) {
   HandleScope scope;
-  int num=0;  
-  GLubyte *ptr=getArrayData<GLubyte>(args[0],&num);
-  glColor3ubv(ptr);
+  unsigned int num=0;
+  GLubyte *param=arg2v<GLubyte>(Array::Cast(*args[0]),false,0,&num);      
+  glColor3ubv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4bv) {  
   HandleScope scope;
-  int num=0;  
-  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
-  glColor4bv(ptr);
+  unsigned int num=0;
+  GLbyte *param=arg2v<GLbyte>(Array::Cast(*args[0]),false,4,&num);      
+  glColor4bv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4sv) {
   HandleScope scope;
-  int num=0;  
-  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
-  glColor4sv(ptr);
+  unsigned int num=0;
+  GLshort *param=arg2v<GLshort>(Array::Cast(*args[0]),false,4,&num);      
+  glColor4sv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4iv) {
   HandleScope scope;
-  int num=0;  
-  GLint *ptr=getArrayData<GLint>(args[0],&num);
-  glColor4iv(ptr);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[0]),false,0,&num);      
+  glColor4iv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4fv) {
   HandleScope scope;
-  int num=0;  
-  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
-  glColor4fv(ptr);
+  unsigned int num=0;  
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[0]),true,0,&num);      
+  glColor4fv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4dv) {
   HandleScope scope;
-  int num=0;
-  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
-  glColor4dv(ptr);
+  unsigned int num=0;
+  GLdouble *param=arg2v<GLdouble>(Array::Cast(*args[0]),true,0,&num);      
+  glColor4dv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4usv) {
   HandleScope scope;
-  int num=0;  
-  GLushort *ptr=getArrayData<GLushort>(args[0],&num);
-  glColor4usv(ptr);
+  unsigned int num=0;  
+  GLushort *param=arg2v<GLushort>(Array::Cast(*args[0]),false,0,&num);      
+  glColor4usv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4uiv) {
   HandleScope scope;
-  int num=0;  
-  GLuint *ptr=getArrayData<GLuint>(args[0],&num);
-  glColor4uiv(ptr);
+  unsigned int num=0;  
+  GLuint *param=arg2v<GLuint>(Array::Cast(*args[0]),false,0,&num);      
+  glColor4uiv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Color4ubv) {
   HandleScope scope;
-  int num=0;  
-  GLubyte *ptr=getArrayData<GLubyte>(args[0],&num);
-  glColor4ubv(ptr);
+  unsigned int num=0;  
+  GLubyte *param=arg2v<GLubyte>(Array::Cast(*args[0]),false,0,&num);      
+  glColor4ubv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 
@@ -2160,31 +2198,28 @@ JS_METHOD(TexCoord2f) {
 
 JS_METHOD(Lightfv) {
   HandleScope scope;
-
   int light = args[0]->Int32Value();
   int pname = args[1]->Int32Value();
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[2],&num);
-
-  glLightfv(light, pname, ptr);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[2]),true,0,&num);  
+  glLightfv(light, pname, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Lightiv) {
   HandleScope scope;
-
   int light = args[0]->Int32Value();
   int pname = args[1]->Int32Value();
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[2],&num);
-
-  glLightiv(light, pname, ptr);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[2]),false,0,&num);  
+  glLightiv(light, pname, param);
+  delete param;
   return scope.Close(Undefined());
 }
 
 JS_METHOD(Lightf) {
   HandleScope scope;
-
   int light = args[0]->Int32Value();
   int pname = args[1]->Int32Value();
   float param = (float) args[2]->NumberValue();
@@ -2248,47 +2283,49 @@ JS_METHOD(Normal3s) {
 
 JS_METHOD(Normal3bv) {
   HandleScope scope;
-  int num=0;
-  GLbyte *ptr=getArrayData<GLbyte>(args[0],&num);
-  glNormal3bv(ptr);
+  unsigned int num=0;
+  GLbyte *param=arg2v<GLbyte>(Array::Cast(*args[0]),false,0,&num);
+  glNormal3bv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 JS_METHOD(Normal3dv) {
   HandleScope scope;
-  int num=0;
-  GLdouble *ptr=getArrayData<GLdouble>(args[0],&num);
-  glNormal3dv(ptr);
+  unsigned int num=0;
+  GLdouble *param=arg2v<GLdouble>(Array::Cast(*args[0]),true,0,&num);
+  glNormal3dv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 JS_METHOD(Normal3fv) {
   HandleScope scope;
-  int num=0;
-  GLfloat *ptr=getArrayData<GLfloat>(args[0],&num);
-  glNormal3fv(ptr);
+  unsigned int num=0;
+  GLfloat *param=arg2v<GLfloat>(Array::Cast(*args[0]),true,3,&num);
+  glNormal3fv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 JS_METHOD(Normal3iv) {
   HandleScope scope;
-  int num=0;
-  GLint *ptr=getArrayData<GLint>(args[0],&num);
-  glNormal3iv(ptr);
+  unsigned int num=0;
+  GLint *param=arg2v<GLint>(Array::Cast(*args[0]),false,0,&num);
+  glNormal3iv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 JS_METHOD(Normal3sv) {
   HandleScope scope;
-  int num=0;
-  GLshort *ptr=getArrayData<GLshort>(args[0],&num);
-  glNormal3sv(ptr);
+  unsigned int num=0;
+  GLshort *param=arg2v<GLshort>(Array::Cast(*args[0]),false,0,&num);
+  glNormal3sv(param);
+  delete param;
   return scope.Close(Undefined());
 }
 JS_METHOD(PolygonMode) {
   HandleScope scope;
-
   int face = args[0]->Int32Value();
   int mode = args[1]->Int32Value();
-
   glPolygonMode(face,mode);
-
   return scope.Close(Undefined());
 }
 
@@ -2299,28 +2336,57 @@ JS_METHOD(CreateList) {
 
 JS_METHOD(NewList) {
   HandleScope scope;
-
   int list = args[0]->Int32Value();
   int mode = args[1]->Int32Value();
-
   glNewList(list,mode);
-
   return scope.Close(Undefined());
 }
 
 JS_METHOD(CallList) {
   HandleScope scope;
-
   int list = args[0]->Int32Value();
-
   glCallList(list);
-
   return scope.Close(Undefined());
 }
 
 JS_METHOD(EndList) {
   HandleScope scope;
   glEndList();
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Fogi) {
+  HandleScope scope;
+  GLenum pname = (GLenum) args[0]->Int32Value();
+  GLint param = (GLint) args[1]->Int32Value();
+  glFogi(pname, param);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Fogf) {
+  HandleScope scope;
+  GLenum pname = (GLenum) args[0]->Int32Value();
+  GLfloat param = (GLfloat) args[1]->NumberValue();
+  glFogf(pname, param);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Fogiv) {
+  HandleScope scope;
+  unsigned num=0;
+  GLenum pname = (GLenum) args[0]->Int32Value();
+  GLint *param=arg2v<GLint>(Array::Cast(*args[1]),false,0,&num);
+  glFogiv(pname,param);
+  return scope.Close(Undefined());
+}
+
+JS_METHOD(Fogfv) {
+  HandleScope scope;
+  unsigned int num=0;
+  GLenum pname = (GLenum) args[0]->Int32Value();
+  GLfloat *array=arg2v<GLfloat>(Array::Cast(*args[1]),true,0,&num);
+  glFogfv(pname,array);
+  delete array;
   return scope.Close(Undefined());
 }
 
