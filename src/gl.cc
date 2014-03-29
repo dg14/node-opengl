@@ -1725,14 +1725,100 @@ namespace gl {
         return scope.Close(JS_INT((int)glCheckFramebufferStatus(target)));
     }
 
+    JS_METHOD(Vertex2s) {
+        HandleScope scope;
+        GLshort x = (GLshort) args[0]->Int32Value();
+        GLshort y = (GLshort) args[1]->Int32Value();
+        glVertex2s(x, y);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex2i) {
+        HandleScope scope;
+        GLint x = (GLint) args[0]->Int32Value();
+        GLint y = (GLint) args[1]->Int32Value();
+        glVertex2i(x, y);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex2f) {
+        HandleScope scope;
+        GLfloat x = (GLfloat) args[0]->NumberValue();
+        GLfloat y = (GLfloat) args[1]->NumberValue();
+        glVertex2f(x, y);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex2d) {
+        HandleScope scope;
+        GLdouble x = (GLdouble) args[0]->NumberValue();
+        GLdouble y = (GLdouble) args[1]->NumberValue();
+        glVertex2f(x, y);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex3s) {
+        HandleScope scope;
+        GLshort x = (GLshort) args[0]->Int32Value();
+        GLshort y = (GLshort) args[1]->Int32Value();
+        GLshort z = (GLshort) args[2]->Int32Value();
+        glVertex3s(x, y, z);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex3i) {
+        HandleScope scope;
+        GLint x = (GLint) args[0]->Int32Value();
+        GLint y = (GLint) args[1]->Int32Value();
+        GLint z = (GLint) args[2]->Int32Value();
+        glVertex3i(x, y, z);
+        return scope.Close(Undefined());
+    }
     JS_METHOD(Vertex3f) {
         HandleScope scope;
-
-        float x = (float) args[0]->NumberValue();
-        float y = (float) args[1]->NumberValue();
-        float z = (float) args[2]->NumberValue();
-
+        GLfloat x = (GLfloat) args[0]->NumberValue();
+        GLfloat y = (GLfloat) args[1]->NumberValue();
+        GLfloat z = (GLfloat) args[2]->NumberValue();
+        glVertex3f(x, y , z);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex3d) {
+        HandleScope scope;
+        GLdouble x = (GLdouble) args[0]->NumberValue();
+        GLdouble y = (GLdouble) args[1]->NumberValue();
+        GLdouble z = (GLdouble) args[2]->NumberValue();
         glVertex3f(x, y, z);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex4s) {
+        HandleScope scope;
+        GLshort x = (GLshort) args[0]->Int32Value();
+        GLshort y = (GLshort) args[1]->Int32Value();
+        GLshort z = (GLshort) args[2]->Int32Value();
+        GLshort w = (GLshort) args[3]->Int32Value();
+        glVertex4s(x, y, z, w);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex4i) {
+        HandleScope scope;
+        GLint x = (GLint) args[0]->Int32Value();
+        GLint y = (GLint) args[1]->Int32Value();
+        GLint z = (GLint) args[2]->Int32Value();
+        GLint w = (GLint) args[3]->Int32Value();
+        glVertex4i(x, y, z, w);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex4f) {
+        HandleScope scope;
+        GLfloat x = (GLfloat) args[0]->NumberValue();
+        GLfloat y = (GLfloat) args[1]->NumberValue();
+        GLfloat z = (GLfloat) args[2]->NumberValue();
+        GLfloat w = (GLfloat) args[3]->NumberValue();
+        glVertex4f(x, y, z, w);
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(Vertex4d) {
+        HandleScope scope;
+        GLdouble x = (GLdouble) args[0]->NumberValue();
+        GLdouble y = (GLdouble) args[1]->NumberValue();
+        GLdouble z = (GLdouble) args[2]->NumberValue();
+        GLdouble w = (GLdouble) args[3]->NumberValue();
+        glVertex4d(x, y, z, w);
         return scope.Close(Undefined());
     }
 
@@ -2112,12 +2198,39 @@ namespace gl {
         return scope.Close(Undefined());
     }
 
+    JS_METHOD(Translated) {
+        HandleScope scope;
+        GLdouble x1 = (GLdouble) args[0]->NumberValue();
+        GLdouble y1 = (GLdouble) args[1]->NumberValue();
+        GLdouble z1 = (GLdouble) args[2]->NumberValue();
+        glTranslated(x1, y1, z1);
+        return scope.Close(Undefined());
+    }
+
     JS_METHOD(Translatef) {
         HandleScope scope;
         float x1 = (float) args[0]->NumberValue();
         float y1 = (float) args[1]->NumberValue();
         float z1 = (float) args[2]->NumberValue();
         glTranslatef(x1, y1, z1);
+        return scope.Close(Undefined());
+    }
+
+    JS_METHOD(Scaled) {
+        HandleScope scope;
+        GLdouble x1 = (GLdouble) args[0]->NumberValue();
+        GLdouble y1 = (GLdouble) args[1]->NumberValue();
+        GLdouble z1 = (GLdouble) args[2]->NumberValue();
+        glScaled(x1, y1, z1);
+        return scope.Close(Undefined());
+    }
+
+    JS_METHOD(Scalef) {
+        HandleScope scope;
+        float x1 = (float) args[0]->NumberValue();
+        float y1 = (float) args[1]->NumberValue();
+        float z1 = (float) args[2]->NumberValue();
+        glScalef(x1, y1, z1);
         return scope.Close(Undefined());
     }
 
@@ -2282,10 +2395,56 @@ namespace gl {
         return scope.Close(Undefined());
     }
 
+    JS_METHOD(GenLists) {
+        HandleScope scope;
+        int sizei = args[0]->Int32Value();
+        return scope.Close(JS_INT(glGenLists(sizei)));
+    }
+
     JS_METHOD(CallList) {
         HandleScope scope;
         int list = args[0]->Int32Value();
         glCallList(list);
+        return scope.Close(Undefined());
+    }
+
+    JS_METHOD(CallLists) {
+        HandleScope scope;
+        GLsizei sizei = args[0]->Int32Value();
+        GLenum type = args[1]->Int32Value();
+        unsigned int num = 0;
+        switch (type) {
+        case GL_BYTE:
+        case GL_2_BYTES:
+        case GL_3_BYTES:
+        case GL_4_BYTES:
+            glCallLists(sizei, type, arg2v<GLbyte>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        case GL_UNSIGNED_BYTE:
+            glCallLists(sizei, type, arg2v<GLubyte>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        case GL_SHORT:
+            glCallLists(sizei, type, arg2v<GLshort>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        case GL_INT:
+            glCallLists(sizei, type, arg2v<GLint>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        case GL_UNSIGNED_INT:
+            glCallLists(sizei, type, arg2v<GLuint>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        case GL_FLOAT:
+            glCallLists(sizei, type, arg2v<GLfloat>(Array::Cast(*args[2]), false, 0, &num));
+            break;
+        default:
+            return ThrowError("Type not accepted");
+            break;
+        }
+        return scope.Close(Undefined());
+    }
+    JS_METHOD(ListBase) {
+        HandleScope scope;
+        int base = args[0]->Int32Value();
+        glListBase(base);
         return scope.Close(Undefined());
     }
 
@@ -2330,6 +2489,12 @@ namespace gl {
         return scope.Close(Undefined());
     }
 
+    JS_METHOD(PointSize) {
+        HandleScope scope;
+        GLfloat param = (GLfloat) args[0]->NumberValue();
+        glPointSize(param);
+        return scope.Close(Undefined());
+    }
     struct GLObj {
         GLObjectType type;
         GLuint obj;

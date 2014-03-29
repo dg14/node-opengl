@@ -197,10 +197,25 @@ extern "C" {
         NODE_SET_METHOD(target, "color4usv", gl::Color4usv);
         NODE_SET_METHOD(target, "color4uiv", gl::Color4uiv);
 
+        NODE_SET_METHOD(target, "vertex2s", gl::Vertex2s);
+        NODE_SET_METHOD(target, "vertex2i", gl::Vertex2i);
+        NODE_SET_METHOD(target, "vertex2f", gl::Vertex2f);
+        NODE_SET_METHOD(target, "vertex2d", gl::Vertex2d);
+        NODE_SET_METHOD(target, "vertex3s", gl::Vertex3s);
+        NODE_SET_METHOD(target, "vertex3i", gl::Vertex3i);
         NODE_SET_METHOD(target, "vertex3f", gl::Vertex3f);
+        NODE_SET_METHOD(target, "vertex3d", gl::Vertex3d);
+        NODE_SET_METHOD(target, "vertex4s", gl::Vertex4s);
+        NODE_SET_METHOD(target, "vertex4i", gl::Vertex4i);
+        NODE_SET_METHOD(target, "vertex4f", gl::Vertex4f);
+        NODE_SET_METHOD(target, "vertex4d", gl::Vertex4d);
+
         NODE_SET_METHOD(target, "rotatef", gl::Rotatef);
         NODE_SET_METHOD(target, "ortho", gl::Ortho);
         NODE_SET_METHOD(target, "translatef", gl::Translatef);
+        NODE_SET_METHOD(target, "translated", gl::Translated);
+        NODE_SET_METHOD(target, "scalef", gl::Scalef);
+        NODE_SET_METHOD(target, "scaled", gl::Scaled);
         NODE_SET_METHOD(target, "shadeModel", gl::ShadeModel);
         NODE_SET_METHOD(target, "texCoord2f", gl::TexCoord2f);
 
@@ -226,10 +241,15 @@ extern "C" {
         NODE_SET_METHOD(target, "newList", gl::NewList);
         NODE_SET_METHOD(target, "endList", gl::EndList);
         NODE_SET_METHOD(target, "callList", gl::CallList);
+        NODE_SET_METHOD(target, "genLists", gl::GenLists);
+        NODE_SET_METHOD(target, "callLists", gl::CallLists);
+        NODE_SET_METHOD(target, "listBase", gl::ListBase);
         NODE_SET_METHOD(target, "fogi", gl::Fogi);
         NODE_SET_METHOD(target, "fogf", gl::Fogf);
         NODE_SET_METHOD(target, "fogiv", gl::Fogiv);
         NODE_SET_METHOD(target, "fogfv", gl::Fogfv);
+
+        NODE_SET_METHOD(target, "pointSize", gl::PointSize);
 
         // OpenGL ES 2.1 constants
 
@@ -239,6 +259,9 @@ extern "C" {
         JS_GL_CONSTANT(COLOR_BUFFER_BIT);
 
         /* Boolean */
+        JS_GL_CONSTANT(FALSE);
+        JS_GL_CONSTANT(TRUE);
+
         JS_GL_CONSTANT(FALSE);
         JS_GL_CONSTANT(TRUE);
 
@@ -323,6 +346,11 @@ extern "C" {
         JS_GL_CONSTANT(FRONT);
         JS_GL_CONSTANT(BACK);
         JS_GL_CONSTANT(FRONT_AND_BACK);
+
+        /* PolygonMode */
+        JS_GL_CONSTANT(LINE);
+        JS_GL_CONSTANT(POINT);
+        JS_GL_CONSTANT(FILL);
 
         /* DepthFunction */
         /*      GL_NEVER */

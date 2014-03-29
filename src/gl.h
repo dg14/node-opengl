@@ -193,10 +193,26 @@ JS_METHOD(Color4dv);
 JS_METHOD(Color4ubv);
 JS_METHOD(Color4usv);
 JS_METHOD(Color4uiv);
+
+JS_METHOD(Vertex2s);
+JS_METHOD(Vertex2i);
+JS_METHOD(Vertex2f);
+JS_METHOD(Vertex2d);
+JS_METHOD(Vertex3s);
+JS_METHOD(Vertex3i);
 JS_METHOD(Vertex3f);
+JS_METHOD(Vertex3d);
+JS_METHOD(Vertex4s);
+JS_METHOD(Vertex4i);
+JS_METHOD(Vertex4f);
+JS_METHOD(Vertex4d);
+
 JS_METHOD(Rotatef);
 JS_METHOD(Ortho);
 JS_METHOD(Translatef);
+JS_METHOD(Translated);
+JS_METHOD(Scalef);
+JS_METHOD(Scaled);
 JS_METHOD(ShadeModel);
 JS_METHOD(TexCoord2f);
 JS_METHOD(Lightf);
@@ -220,12 +236,17 @@ JS_METHOD(PolygonMode);
 JS_METHOD(CreateList);
 JS_METHOD(NewList);
 JS_METHOD(EndList);
+JS_METHOD(GenLists);
 JS_METHOD(CallList);
+JS_METHOD(CallLists);
+JS_METHOD(ListBase);
 
 JS_METHOD(Fogi);
 JS_METHOD(Fogf);
 JS_METHOD(Fogfv);
 JS_METHOD(Fogiv);
+
+JS_METHOD(PointSize);
 
 }
 
