@@ -7,15 +7,27 @@ The project is born from a fork of node-webgl package at https://github.mikeseve
 Dependencies
 ------------
 - NodeJS
-- GL
+- node-glfw (GLFW 3.0, OpenGL/Mesa)
 
 License
 -------
 BSD
 
+Modules included
+----------------
+
+- skel: app skeleton
+- timer: timer object
+- ogl: 2D drawing primitives (rectangle, polygon, grid)
+
+Examples
+--------
+- in example/ there are Nehe Production (http://nehe.gamedev.net) Lessons converted in javascript
+
 Todo
 ----
 
+* 
 TBW
 
 
