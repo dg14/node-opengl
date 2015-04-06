@@ -1,4 +1,4 @@
-var skel = require('./skel.js');
+var skel = require('node-opengl').skel;
 var i = 0;
 var glu = require('node-glu');
 skel.onResize = function() {
@@ -19,7 +19,7 @@ skel.onInitScene = function() {
     gl.depthFunc(gl.LEQUAL);
     gl.hint(gl.PERSPECTIVE_CORRECTION_HINT, gl.NICEST);
 }
-skel.onDrawScene = function() {
+skel.onDrawScene = function() {    
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.loadIdentity();
     gl.translatef(-1.5, 0.0, -6.0);
@@ -35,6 +35,6 @@ skel.onDrawScene = function() {
     gl.vertex3f(1.0, -1.0, 0.0);
     gl.vertex3f(-1.0, -1.0, 0.0);
     gl.end();
-    requestAnimationFrame(skel.onDrawScene);
+//    requestAnimationFrame(skel.onDrawScene);
 }
 skel.main();

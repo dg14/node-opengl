@@ -1,7 +1,7 @@
 var nodejs = true,
     opengl = require('node-opengl'),
     Image = new require('node-opengl').Image,
-    glfw = require('node-glfw');
+    glfw = require('node-glfw'),
     app=opengl.createApp();
 
 function initGL(canvas) {
@@ -15,16 +15,19 @@ function initGL(canvas) {
     }
 }
 
+
 requestAnimationFrame = app.requestAnimationFrame;
 
 exports.main = function() {
     var canvas = app.createElement("lesson02-canvas");
+    var gl=app.getContext();
     initGL(canvas);
-    glfw.Enable(glfw.KEY_REPEAT);    
+//    glfw.Enable(glfw.KEY_REPEAT);    
     if (this.onInitScene) this.onInitScene();
     if (this.onResize) this.onResize();
     var state=[];
-    if (this.onDrawScene) this.onDrawScene();
+    app.setRedrawFunction(this.onDrawScene);
+    app.main();
 }
 
 var textures=[];
@@ -54,3 +57,6 @@ exports.loadTexture = function (key, file) {
     return texture;    
 }
 
+exports.getApp= function() {
+    return app;
+}

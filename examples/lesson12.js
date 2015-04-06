@@ -1,4 +1,4 @@
-var skel = require('./skel.js');
+var skel = require('node-opengl').skel;
 var i = 0;
 var glu = require('node-glu');
 var gl = require('node-opengl');

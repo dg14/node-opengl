@@ -1,13 +1,23 @@
-var gl = module.exports = require('./build/Release/gl.node');
-
-module.exports.createApp = function() {
+var gl = require('./build/Release/gl.node');
+module.exports = gl;
+var shutdown_callback = false;
+module.exports.setShutdownCallback = function(callback) {
+    shutdown_callback = callback;
+}
+module.exports.createApp = function(quitfun) {
     var GLFW = require('node-glfw');
     var gl = require('./build/Release/gl.node');
-    if (process.platform !== 'win32') process.on('SIGINT', function() {
+    var onquit = function() {
+        console.log('Shutting Down');
+        if (shutdown_callback) shutdown_callback();
         process.exit(0);
+    }
+    if (process.platform !== 'win32') process.on('SIGINT', function() {
+        onquit();
     });
     var events;
     var platform;
+/*    
     Object.defineProperty(GLFW, 'events', {
         get: function() {
             if (events) return events;
@@ -27,25 +37,20 @@ module.exports.createApp = function() {
             return events;
         }
     });
+*/    
     GLFW.Init();
     //  GLFW.events.on('event', console.dir);
     GLFW.events.on('quit', function() {
-        process.exit(0);
+        onquit();
     });
     GLFW.events.on("keydown", function(evt) {
-        if (evt.keyCode === 'C'.charCodeAt(0) && evt.ctrlKey) {
-            process.exit(0);
-        } // Control+C
-        if (evt.keyCode === 27) process.exit(0); // ESC
+        if ((evt.keyCode === 'C'.charCodeAt(0) && evt.ctrlKey) || evt.keyCode === 27) onquit();
     });
     platform = {
         type: "nodeGLFW",
         setTitle: GLFW.SetWindowTitle,
-        setIcon: function() {},
+        redrawFunction: false,
         flip: GLFW.SwapBuffers,
-        getElementById: function(name) {
-            return null; //this;
-        },
         createElement: function(name, width, height) {
             this.createWindow(width || 800, height || 800);
             this.canvas = this;
@@ -62,26 +67,53 @@ module.exports.createApp = function() {
                 rl = GLFW.events.listeners('resize');
             for (var l = 0, ln = rl.length; l < ln; ++l) resizeListeners[l] = rl[l];
             GLFW.events.removeAllListeners('resize');
-            GLFW.OpenWindowHint(GLFW.WINDOW_NO_RESIZE, 0);
-            // we use OpenGL 2.1, GLSL 1.20. Comment this for now as this is for GLSL 1.50
-            //GLFW.OpenWindowHint(GLFW.OPENGL_FORWARD_COMPAT, 1);
-            //GLFW.OpenWindowHint(GLFW.OPENGL_VERSION_MAJOR, 3);
-            //GLFW.OpenWindowHint(GLFW.OPENGL_VERSION_MINOR, 2);
-            //GLFW.OpenWindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE);
-            if (!GLFW.OpenWindow(width, height, 0, 0, 0, 0, // r,g,b,a bits
-                24, 0, // depth, stencil bits
-                attribs)) {
+            GLFW.DefaultWindowHints();
+            this.window = GLFW.CreateWindow(width, height, "Test");
+            if (!this.window) {
                 GLFW.Terminate();
                 throw "Can't initialize GL surface";
             }
+            GLFW.MakeContextCurrent(this.window);
             // make sure GLEW is initialized
             gl.Init();
             //GLFW.SwapBuffers();
             GLFW.SwapInterval(0); // Disable VSync (we want to get as high FPS as possible!)
             for (var l = 0, ln = resizeListeners.length; l < ln; ++l) GLFW.events.addListener('resize', resizeListeners[l]);
-            var size = GLFW.GetWindowSize();
+            //            var size = GLFW.GetWindowSize();
+            var size = GLFW.GetFramebufferSize(this.window);
             this.width = this.drawingBufferWidth = size.width;
             this.height = this.drawingBufferHeight = size.height;
+        },
+        main: function() {
+            while (!GLFW.WindowShouldClose(this.window) && !GLFW.GetKey(this.window, GLFW.KEY_ESCAPE)) {
+                if (this.redrawFunction) {
+                    this.redrawFunction();
+                }
+                // Get window size (may be different than the requested size)
+                var wsize = GLFW.GetFramebufferSize(this.window);
+                // 
+                // Swap buffers
+                GLFW.SwapBuffers(this.window);
+                GLFW.PollEvents();
+            }
+        },
+        main2: function() {
+            var l=false;
+            while (!GLFW.WindowShouldClose(this.window) && !GLFW.GetKey(this.window, GLFW.KEY_ESCAPE)) {
+                // Get window size (may be different than the requested size)
+                var wsize = GLFW.GetFramebufferSize(this.window);
+                if (!l) {
+                    this.redrawFunction();
+                    l=true;
+                }
+                // 
+                // Swap buffers
+                GLFW.SwapBuffers(this.window);
+                GLFW.PollEvents();
+            }
+        },
+        setRedrawFunction: function(fun) {
+            this.redrawFunction = fun;
         },
         getContext: function(name) {
             return gl;
@@ -89,21 +121,16 @@ module.exports.createApp = function() {
         on: function(name, callback) {
             GLFW.events.on(name, callback);
         },
-        addEventListener: function(name, callback) {
-            GLFW.events.on(name, callback);
-        },
-        removeEventListener: function(name, callback) {
-            GLFW.events.removeListener(name, callback);
-        },
         requestAnimationFrame: function(callback, delay) {
-            GLFW.SwapBuffers();
+            //GLFW.SwapBuffers(this.window);
+            //GLFW.PollEvents();
             var timer = setImmediate; //process.nextTick;
             var d = 16;
             if (delay == undefined || delay > 0) {
                 timer = setTimeout;
                 d = delay;
             }
-            timer(function() {
+            timer(function() {                
                 callback(GLFW.GetTime() * 1000.0);
             }, d);
         }
@@ -125,21 +152,20 @@ module.exports.createApp = function() {
     });
     return platform;
 };
-
 //var Image = module.exports.Image = require('./build/Release/gl.node').Image;
 var Image = module.exports.Image = gl.Image;
 var events = require('events');
-
 Object.defineProperty(Image.prototype, 'onload', {
-  set: function(callback) { 
-    this.on('load', callback);
+    set: function(callback) {
+        this.on('load', callback);
     },
 });
-
 inherits(Image, events.EventEmitter);
-
 // extend prototype
 function inherits(target, source) {
-  for (var k in source.prototype)
-    target.prototype[k] = source.prototype[k];
+    for (var k in source.prototype) target.prototype[k] = source.prototype[k];
 }
+
+module.exports.Timer=require('./timer.js');
+module.exports.ogl=require('./ogl.js');
+module.exports.skel=require('./skel.js');

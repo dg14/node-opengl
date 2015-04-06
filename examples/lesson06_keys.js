@@ -1,4 +1,4 @@
-var skel = require('./skel.js');
+var skel = require('node-opengl').skel;
 var i = 0;
 var glu = require('node-glu');
 var gl = require('node-opengl');
@@ -16,7 +16,7 @@ skel.onResize = function() {
 var texture;
 skel.onInitScene = function() {
     // init.
-    texture = skel.loadTexture(1, 'nehe.gif');
+    texture = skel.loadTexture(1, 'Data/lesson6/nehe.gif');
     gl.enable(gl.TEXTURE_2D);
     gl.shadeModel(gl.SMOOTH);
     gl.clearColor(0.0, 0.0, 0.0, 0.5);
